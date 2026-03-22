@@ -22,5 +22,7 @@ export const userService = {
     api.post<User>('/user', data),
 
   login: (data: LoginPayload) =>
-    api.post<User>('/user/login', data),
+    api.post<User>('/user/login', data,{
+       credentials: 'include' 
+    }),
 };
