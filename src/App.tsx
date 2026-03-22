@@ -10,7 +10,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Animals />} />
-        <Route path="/animals" element={<Animals />} />
         <Route path="/animal/:id" element={<NotFound />} />
         <Route path="/About" element={<About />} />
         <Route path="/dashboard" element={<Dashboard />} />
