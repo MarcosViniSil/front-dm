@@ -20,6 +20,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
       'Content-Type': 'application/json',
       ...init.headers,
     },
+    credentials: init.credentials || 'same-origin', 
   });
 
   let data: any = null;
