@@ -38,7 +38,7 @@ function Animals() {
   useEffect(() => {
     fetchAnimals(0);
   }, []);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (!document.scrollingElement || hasMore === false || loading) return;
@@ -97,7 +97,7 @@ function Animals() {
               </ul>
 
               <Link
-                to={`/animal/${animal.id}`}
+                to={`/quiz/${animal.id}`}
                 className="animal-card__cta"
                 id={`quiz-link-${animal.id}`}
               >

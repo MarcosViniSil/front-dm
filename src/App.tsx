@@ -6,13 +6,14 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Navbar from './components/Navbar/Navbar';
+import Quiz from './pages/Quiz/Quiz';
 
 function App() {
   return <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<Animals />} />
-        <Route path="/quiz/:id" element={<NotFound />} />
+        <Route path="/quiz/:id" element={<Quiz />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
