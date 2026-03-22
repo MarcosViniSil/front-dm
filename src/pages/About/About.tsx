@@ -3,29 +3,23 @@ import './About.css';
 function About() {
   return (
     <div className="page about-page">
-      <h1>About</h1>
+      <h1>Sobre o projeto</h1>
       <div className="about-card">
         <p>
-          This project follows a scalable folder structure with dedicated
-          directories for <strong>components</strong>, <strong>pages</strong>,
-          and <strong>services</strong>.
+         Descrição do projeto
         </p>
         <ul>
           <li>
-            <strong>Components</strong> — Reusable UI elements (buttons, cards,
-            modals, etc.)
+            justificativa 1
           </li>
           <li>
-            <strong>Pages</strong> — Top-level route views (Home, About,
-            Dashboard, etc.)
+            justificativa 2
           </li>
           <li>
-            <strong>Services</strong> — API calls and business logic (api.ts,
-            userService.ts, etc.)
+            justificativa 3
           </li>
           <li>
-            <strong>Router</strong> — Centralized route configuration with
-            layout wrappers
+            justificativa 4
           </li>
         </ul>
       </div>

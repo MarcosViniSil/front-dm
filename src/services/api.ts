@@ -22,11 +22,21 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     },
   });
 
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+  let data: any = null;
+
+  try {
+    data = await response.json();
+  } catch {
+    data = null;
   }
 
-  return response.json() as Promise<T>;
+  if (!response.ok) {
+    throw new Error(
+      data?.detail || `API Error: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return data as T;
 }
 
 export const api = {
