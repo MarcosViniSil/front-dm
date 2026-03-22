@@ -5,9 +5,9 @@ function NotFound(){
   return (
     <div className="page not-found-page">
       <h1>404</h1>
-      <p>The page you're looking for doesn't exist.</p>
+      <p>A paǵina que você buscou não existe.</p>
       <Link to="/" className="back-link">
-        ← Back to Home
+        ← Voltar para página inicial
       </Link>
     </div>
   );
