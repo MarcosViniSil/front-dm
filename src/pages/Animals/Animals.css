@@ -3,6 +3,7 @@
 /* Hero / header */
 .animals-hero {
   text-align: center;
+  padding: 15px;
 }
 
 .animals-hero h1 {
