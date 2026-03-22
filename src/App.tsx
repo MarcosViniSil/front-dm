@@ -12,10 +12,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Animals />} />
-        <Route path="/animal/:id" element={<NotFound />} />
+        <Route path="/quiz/:id" element={<NotFound />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/About" element={<About />} />
+        <Route path="/about" element={<About />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

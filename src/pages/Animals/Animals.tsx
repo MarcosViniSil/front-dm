@@ -10,12 +10,17 @@ function Animals() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const isFetchingRef = useRef(false);
 
   const fetchAnimals = useCallback(async (currentOffset: number) => {
-    if (loading) return;
+    if (isFetchingRef.current) return;
+
+    isFetchingRef.current = true;
     setLoading(true);
+
     try {
       const data = await animalService.getAnimals(currentOffset);
+
       if (data.length === 0) {
         setHasMore(false);
       } else {
@@ -25,13 +30,15 @@ function Animals() {
     } catch (err) {
       console.error('Erro ao buscar animais:', err);
     } finally {
+      isFetchingRef.current = false;
       setLoading(false);
     }
-  }, [loading]);
+  }, []);
 
   useEffect(() => {
     fetchAnimals(0);
   }, []);
+  
   useEffect(() => {
     const handleScroll = () => {
       if (!document.scrollingElement || hasMore === false || loading) return;
@@ -39,6 +46,7 @@ function Animals() {
       const scrollTop = document.documentElement.scrollTop;
       const windowHeight = window.innerHeight;
       const scrollHeight = document.scrollingElement.scrollHeight;
+
 
       if (windowHeight + scrollTop >= scrollHeight - 100) {
         fetchAnimals(offset);

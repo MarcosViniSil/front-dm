@@ -26,13 +26,13 @@ function Navbar() {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/dashboard">
+          <NavLink to="/login">
             <span className="nav-icon"><CgProfile /></span>
             <span className="nav-label">Perfil</span>
           </NavLink>
         </li>
         <li>
-          <NavLink to="/About">
+          <NavLink to="/about">
             <span className="nav-icon"><IoIosInformationCircle /></span>
             <span className="nav-label">Sobre</span>
           </NavLink>
