@@ -6,6 +6,11 @@ export interface CreateUserPayload {
   password: string;
 }
 
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
 export interface User {
   id: number;
   name: string;
@@ -15,4 +20,7 @@ export interface User {
 export const userService = {
   register: (data: CreateUserPayload) =>
     api.post<User>('/user', data),
+
+  login: (data: LoginPayload) =>
+    api.post<User>('/user/login', data),
 };

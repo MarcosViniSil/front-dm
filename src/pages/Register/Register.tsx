@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { userService } from '../../services';
 import './Register.css';
+import { IoMdEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
 
 interface FormErrors {
   name?: string;
@@ -20,6 +21,7 @@ function Register() {
   const [apiError, setApiError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function validate(): FormErrors {
     const errs: FormErrors = {};
@@ -43,6 +45,10 @@ function Register() {
     }
 
     return errs;
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   }
 
   async function handleSubmit(e: React.SubmitEvent) {
@@ -121,14 +127,17 @@ function Register() {
 
             <div className={`form-field ${errors.password ? 'has-error' : ''}`}>
               <label htmlFor="register-password">Senha</label>
+              <div className='password-container'>
               <input
                 id="register-password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Mínimo 6 caracteres"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: undefined })); }}
                 autoComplete="new-password"
               />
+              <p onClick={togglePasswordVisibility} className='seeAndHidePassword'>{showPassword ? <IoMdEyeOff/> : <IoMdEye/>}</p>
+              </div>
               {errors.password && <span className="field-error">{errors.password}</span>}
             </div>
 
