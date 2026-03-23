@@ -7,12 +7,14 @@ import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Navbar from './components/Navbar/Navbar';
 import Quiz from './pages/Quiz/Quiz';
+import AnimalsMap from './pages/Map/AnimalsMap';
 
 function App() {
   return <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<Animals />} />
+        <Route path="/map" element={<AnimalsMap />} />
         <Route path="/quiz/:id" element={<Quiz />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

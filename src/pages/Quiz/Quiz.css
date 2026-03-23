@@ -22,7 +22,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60vh;
+  height: 40vh;
+}
+
+.flex-center-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
 }
 
 .quiz-card, .result-card {
