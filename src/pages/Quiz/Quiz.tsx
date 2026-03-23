@@ -166,7 +166,7 @@ const defineMessageCounter = () => {
 
     return (
       <>
-        <div className="page quiz-page flex-center">
+        <div className="page quiz-page flex-center-result">
 
           <div className="quiz-card result-card">
             <h1 className="quiz-title">Resultado do Quiz</h1>
