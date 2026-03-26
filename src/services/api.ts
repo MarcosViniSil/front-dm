@@ -1,5 +1,5 @@
 // Base API configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-dm-69db35e2f2d0.herokuapp.com';
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string>;
