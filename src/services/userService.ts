@@ -1,21 +1,28 @@
 import { api } from './api';
 
-// Example model interface
+export interface CreateUserPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
 }
 
-// Example service — replace endpoints with your real API
 export const userService = {
-  getAll: () => api.get<User[]>('/users'),
+  register: (data: CreateUserPayload) =>
+    api.post<User>('/user', data),
 
-  getById: (id: string) => api.get<User>(`/users/${id}`),
-
-  create: (data: Omit<User, 'id'>) => api.post<User>('/users', data),
-
-  update: (id: string, data: Partial<User>) => api.put<User>(`/users/${id}`, data),
-
-  delete: (id: string) => api.delete<void>(`/users/${id}`),
+  login: (data: LoginPayload) =>
+    api.post<User>('/user/login', data,{
+       credentials: 'include' 
+    }),
 };

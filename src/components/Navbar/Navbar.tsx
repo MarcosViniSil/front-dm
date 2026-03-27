@@ -1,38 +1,76 @@
-import { NavLink } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Menu } from 'antd';
+import {
+  HomeOutlined,
+  EnvironmentOutlined,
+  UserOutlined,
+  InfoCircleOutlined,
+} from '@ant-design/icons';
+import type { MenuProps } from 'antd';
 import './Navbar.css';
-import { CgProfile } from "react-icons/cg";
-import { GoHome } from "react-icons/go";
-import { FaLocationDot } from "react-icons/fa6";
+
+const menuItems: MenuProps['items'] = [
+  {
+    key: '/',
+    icon: <HomeOutlined />,
+    label: 'Início',
+  },
+  {
+    key: '/map',
+    icon: <EnvironmentOutlined />,
+    label: 'Mapa',
+  },
+  {
+    key: '/login',
+    icon: <UserOutlined />,
+    label: 'Perfil',
+  },
+  {
+    key: '/about',
+    icon: <InfoCircleOutlined />,
+    label: 'Sobre',
+  },
+];
 
 function Navbar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const selectedKey = (() => {
+    const path = location.pathname;
+    // Match exact routes that exist in menu
+    if (path === '/') return '/';
+    const match = menuItems?.find(
+      (item) => item && 'key' in item && path.startsWith(item.key as string) && item.key !== '/'
+    );
+    return match && 'key' in match ? (match.key as string) : '';
+  })();
+
+  const handleClick: MenuProps['onClick'] = ({ key }) => {
+    navigate(key);
+  };
+
   return (
-    <nav className="navbar">
+    <nav className="fauna-navbar">
       <div className="navbar-brand">
         <span className="brand-icon">🌿</span>
         Amigos da fauna
       </div>
-      <ul className="navbar-links">
-        <li>
-          <NavLink to="/" end>
-            <span className="nav-icon"><GoHome /></span>
-            <span className="nav-label">Início</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/About">
-            <span className="nav-icon"><FaLocationDot /></span>
-            <span className="nav-label">Localização</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/dashboard">
-            <span className="nav-icon"><CgProfile /></span>
-            <span className="nav-label">Perfil</span>
-          </NavLink>
-        </li>
-      </ul>
+      <Menu
+        mode="horizontal"
+        selectedKeys={[selectedKey]}
+        onClick={handleClick}
+        items={menuItems}
+        className="navbar-menu"
+        style={{
+          background: 'transparent',
+          borderBottom: 'none',
+          flex: 1,
+          justifyContent: 'flex-end',
+        }}
+      />
     </nav>
   );
-};
+}
 
 export default Navbar;
