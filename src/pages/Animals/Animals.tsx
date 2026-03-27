@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, Row, Col, Typography, Spin, Button } from 'antd';
 import { animalService } from '../../services';
 import type { Animal } from '../../services';
+import ShareButton from '../../components/share/Share';
 
 const { Title, Text } = Typography;
 
@@ -153,6 +154,12 @@ function Animals() {
           🌿 Todos os animais foram carregados
         </Text>
       )}
+
+      <ShareButton 
+        title="Amigos da Fauna - Gato-Mourisco" 
+        text="Conheça tudo sobre o Gato-Mourisco e como nossa fauna é incrível!" 
+        url="http://seusite.com/animais/1"
+      />    
     </div>
   );
 }
