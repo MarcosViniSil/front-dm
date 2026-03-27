@@ -1,13 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
 import { BrowserRouter } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import ptBR from 'antd/locale/pt_BR';
+import { faunaTheme } from './theme/faunaTheme';
+import './index.css';
 import App from './App';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ConfigProvider theme={faunaTheme} locale={ptBR}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ConfigProvider>
   </StrictMode>,
 );
