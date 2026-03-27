@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, Row, Col, Typography, Spin, Button } from 'antd';
 import { animalService } from '../../services';
 import type { Animal } from '../../services';
+import ShareButton from '../../components/ShareButton/ShareButton';
 
 const { Title, Text } = Typography;
 
@@ -132,6 +133,11 @@ function Animals() {
                   Realizar Quiz
                 </Button>
               </Link>
+              <ShareButton 
+                title={`Amigos da Fauna - ${animal.name}`} 
+                text={`Aprenda tudo sobre o ${animal.name} e teste seus conhecimentos!`} 
+                url={`${window.location.origin}/quiz/${animal.id}`}
+              />
             </Card>
           </Col>
         ))}
@@ -153,6 +159,7 @@ function Animals() {
           🌿 Todos os animais foram carregados
         </Text>
       )}
+
     </div>
   );
 }
