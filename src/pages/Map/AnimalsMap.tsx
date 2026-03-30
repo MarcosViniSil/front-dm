@@ -174,7 +174,7 @@ function AnimalsMap() {
             <MapContainer
               center={[centerLat, centerLng] as [number, number]}
               zoom={5}
-              scrollWheelZoom={true}
+              scrollWheelZoom={false}
               className="leaflet-container"
               ref={mapRef}
             >

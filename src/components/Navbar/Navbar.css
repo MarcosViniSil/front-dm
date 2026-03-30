@@ -6,8 +6,8 @@
   background: rgba(245, 241, 227, 0.92);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(93, 64, 55, 0.12);
-  position: sticky;
   top: 0;
+  position: sticky;
   z-index: 100;
 }
 
@@ -52,8 +52,10 @@
     padding: 0;
     border-bottom: none;
     border-top: 1px solid rgba(93, 64, 55, 0.12);
+    
     justify-content: center;
     flex-direction: column;
+    
   }
 
   .navbar-brand {
@@ -81,5 +83,11 @@
   .navbar-menu .ant-menu-item .anticon {
     font-size: 1.35rem !important;
     margin-inline-end: 0 !important;
+  }
+
+  .navbar-menu .ant-menu-title-content {
+    margin-inline-start: 0 !important;
+    margin-left: 0 !important;
+    transition: none;
   }
 }
