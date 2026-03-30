@@ -6,9 +6,11 @@ import ptBR from 'antd/locale/pt_BR';
 import { faunaTheme } from './theme/faunaTheme';
 import './index.css';
 import App from './App';
+import { Toaster } from 'sonner';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <Toaster position="top-right" />
     <ConfigProvider theme={faunaTheme} locale={ptBR}>
       <BrowserRouter>
         <App />

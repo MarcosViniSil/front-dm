@@ -1,46 +1,64 @@
 import { useState } from 'react';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import { ShareAltOutlined } from '@ant-design/icons';
+import { toast } from 'sonner';
 
 interface ShareButtonProps {
   title?: string;
   text?: string;
   url?: string;
 }
-
+const sendSuccess = (message: string, toastId: number) => {
+  toast.success(message, {
+    style: {
+      background: '#346E62',
+      color: '#fff'
+    },
+    id: toastId,
+  });
+}
+const sendError = (message: string, toastId: number) => {
+  toast.error(`${message}`, {
+    style: {
+      background: '#8B0000',
+      color: '#fff'
+    },
+    id: toastId,
+  });
+}
 const ShareButton = ({ title, text, url }: ShareButtonProps) => {
   const [loading, setLoading] = useState(false);
-  
+
   const handleShareClick = async () => {
     if (!navigator.share) {
       navigator.clipboard.writeText(url || window.location.href);
-      message.success('URL copiada para a área de transferência!');
+      sendSuccess('URL copiada para a área de transferência!', -1)
       return;
     }
-    
+
     try {
       setLoading(true);
-      
+
       await navigator.share({
         title: title || 'Venha ver isso no Amigos da Fauna!',
         text: text || 'Achei esse conteúdo bem interessante!',
         url: url || window.location.href,
       });
-      
+
       console.log('Compartilhado com sucesso!');
     } catch (error: any) {
-       if (error.name !== "AbortError") {
-         console.error('Falha ao compartilhar', error);
-         message.error('Ocorreu um erro ao tentar abrir as opções de compartilhamento.');
-       }
+      if (error.name !== "AbortError") {
+        console.error('Falha ao compartilhar', error);
+        sendError('Ocorreu um erro ao tentar abrir as opções de compartilhamento.', -1)
+      }
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
-    <Button 
-      type="default" 
+    <Button
+      type="default"
       icon={<ShareAltOutlined />}
       onClick={handleShareClick}
       loading={loading}
