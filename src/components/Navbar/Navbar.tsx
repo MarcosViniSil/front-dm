@@ -65,6 +65,7 @@ function Navbar() {
           background: 'transparent',
           borderBottom: 'none',
           flex: 1,
+          zIndex: 100,
           justifyContent: 'end',
         }}
       />

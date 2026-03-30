@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Typography, Card, List, Avatar, Spin, Row, Col } from 'antd';
+import { Typography, Card, List, Avatar, Spin, Row, Col, Button } from 'antd';
+import { AimOutlined } from '@ant-design/icons';
 import { animalService } from '../../services';
 import type { AnimalLocation } from '../../services';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import './AnimalsMap.css';
@@ -10,6 +11,7 @@ import './AnimalsMap.css';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import { toast } from 'sonner';
 
 const { Title, Text } = Typography;
 
@@ -23,13 +25,52 @@ const defaultIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+const sendError = (message: string, toastId: number) => {
+  toast.error(`${message}`, {
+    style: {
+      background: '#8B0000',
+      color: '#fff'
+    },
+    id: toastId,
+  });
+}
+
+const errorLocation = (err: any) => {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+  sendError("Ocorreu um erro ao obter localização.Verifique as permissões", -1)
+}
+
 function AnimalsMap() {
   const [locations, setLocations] = useState<AnimalLocation[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [userPos, setUserPos] = useState<[number, number] | null>(null);
+  
   const isFetchingRef = useRef(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<L.Map | null>(null);
+
+  const getUserLocation = () => {
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newPos: [number, number] = [latitude, longitude];
+        setUserPos(newPos);
+        if (mapRef.current) {
+          mapRef.current.flyTo(newPos, 5, { duration: 0.1 });
+        }
+      },
+      errorLocation,
+      options
+    );
+  };
 
   const fetchLocations = useCallback(async (currentOffset: number) => {
     if (isFetchingRef.current) return;
@@ -91,7 +132,7 @@ function AnimalsMap() {
               <List
                 dataSource={locations}
                 loading={loading && locations.length === 0}
-                renderItem={(animal:any) => (
+                renderItem={(animal: any) => (
                   <List.Item key={animal.id}>
                     <List.Item.Meta
                       avatar={
@@ -133,8 +174,9 @@ function AnimalsMap() {
             <MapContainer
               center={[centerLat, centerLng] as [number, number]}
               zoom={5}
-              scrollWheelZoom={false}
+              scrollWheelZoom={true}
               className="leaflet-container"
+              ref={mapRef}
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -172,8 +214,37 @@ function AnimalsMap() {
                   </Popup>
                 </Marker>
               ))}
+
+              {userPos && (
+                <CircleMarker
+                  center={userPos}
+                  radius={10}
+                  pathOptions={{
+                    color: '#fff',
+                    fillColor: '#a20d08ff',
+                    fillOpacity: 1
+                  }}
+                >
+                  <Popup>Você está aqui!</Popup>
+                </CircleMarker>
+              )}
             </MapContainer>
           </div>
+          <Button
+            type="primary"
+            icon={<AimOutlined />}
+            size="medium"
+            onClick={getUserLocation}
+            block
+            style={{
+              marginTop: 16,
+              background: '#4A5D23',
+              borderColor: '#4A5D23',
+              fontWeight: 600,
+            }}
+          >
+            MInha localização
+          </Button>
         </Col>
       </Row>
     </div>
