@@ -32,9 +32,10 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
   }
 
   if (!response.ok) {
-    throw new Error(
-      data?.detail || `API Error: ${response.status} ${response.statusText}`
-    );
+    const error = new Error(data?.message || 'Request failed') as any;
+    error.status = response.status;
+    error.data = data;
+    throw error;
   }
 
   return data as T;

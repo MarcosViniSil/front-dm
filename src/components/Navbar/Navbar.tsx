@@ -38,7 +38,6 @@ function Navbar() {
 
   const selectedKey = (() => {
     const path = location.pathname;
-    // Match exact routes that exist in menu
     if (path === '/') return '/';
     const match = menuItems?.find(
       (item) => item && 'key' in item && path.startsWith(item.key as string) && item.key !== '/'
@@ -66,7 +65,7 @@ function Navbar() {
           background: 'transparent',
           borderBottom: 'none',
           flex: 1,
-          justifyContent: 'flex-end',
+          justifyContent: 'end',
         }}
       />
     </nav>

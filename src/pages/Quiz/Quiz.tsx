@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Card, Button, Typography, Spin, Result, Progress, Space, Tag } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { quizService } from '../../services';
 import type { QuizQuestion, QuizOption } from '../../services';
+import { toast } from 'sonner';
 
 const { Title, Text } = Typography;
 
@@ -28,6 +29,18 @@ function Quiz() {
   const [counter, setCounter] = useState<number>(-1);
   const [answerDetails, setAnswerDetails] = useState<string>('');
 
+  const navigate = useNavigate();
+
+  const sendError = (message:string,toastId:number) => {
+    toast.error(`${message}`, {
+      style: {
+        background: '#8B0000',
+        color: '#fff'
+      },
+      id: toastId,
+    });
+  }
+
   useEffect(() => {
     async function loadQuiz() {
       if (!id) return;
@@ -47,7 +60,14 @@ function Quiz() {
 
         setQuestions(parsed);
       } catch (err: any) {
-        setError(err.message || 'Erro ao carregar o quiz.');
+        if(err.status == 401 || err.status == 422){
+          sendError("É necessário fazer login para jogar o quiz.",-1)
+          navigate('/login')
+        }else{
+          setError(err.message || 'Erro ao carregar o quiz.');
+        }
+      
+        
       } finally {
         setLoading(false);
       }
@@ -130,7 +150,6 @@ function Quiz() {
     return '';
   };
 
-  // ── Loading state ──
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
@@ -142,7 +161,6 @@ function Quiz() {
     );
   }
 
-  // ── Error state ──
   if (error) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
@@ -160,7 +178,6 @@ function Quiz() {
     );
   }
 
-  // ── Empty state ──
   if (questions.length === 0) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
@@ -178,13 +195,13 @@ function Quiz() {
     );
   }
 
-  // ── Finished / Result state ──
   if (finished) {
     const total = hits + fails;
     const hitPercentage = total > 0 ? Math.round((hits / total) * 100) : 0;
 
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70vh', padding: '2rem' }}>
+         
         <Card style={{ width: '100%', maxWidth: 700, textAlign: 'center' }}>
           <Title level={2} style={{ color: '#5D4037', marginBottom: 24 }}>
             Resultado do Quiz
@@ -226,7 +243,6 @@ function Quiz() {
     );
   }
 
-  // ── Active quiz state ──
   const currentQuestion = questions[currentIndex];
 
   return (
@@ -234,7 +250,7 @@ function Quiz() {
       <Title level={2} style={{ textAlign: 'center', marginBottom: 4 }}>
         É hora de praticar!
       </Title>
-
+      
       <Text
         strong
         style={{ display: 'block', textAlign: 'center', marginBottom: 16, color: '#5D4037', fontSize: '1.1rem' }}

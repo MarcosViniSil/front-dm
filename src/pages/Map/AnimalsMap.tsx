@@ -81,7 +81,6 @@ function AnimalsMap() {
       </Title>
 
       <Row gutter={[24, 24]}>
-        {/* Animal list panel */}
         <Col xs={24} lg={10}>
           <Card title={<Title level={4} style={{ margin: 0, textAlign: 'center' }}>Lista de Animais</Title>}>
             <div
@@ -92,7 +91,7 @@ function AnimalsMap() {
               <List
                 dataSource={locations}
                 loading={loading && locations.length === 0}
-                renderItem={(animal) => (
+                renderItem={(animal:any) => (
                   <List.Item key={animal.id}>
                     <List.Item.Meta
                       avatar={
