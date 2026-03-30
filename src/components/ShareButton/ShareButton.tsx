@@ -38,8 +38,6 @@ const ShareButton = ({ title, text, url }: ShareButtonProps) => {
     }
 
     try {
-      setLoading(true);
-
       await navigator.share({
         title: title || 'Venha ver isso no Amigos da Fauna!',
         text: text || 'Achei esse conteúdo bem interessante!',
@@ -52,8 +50,6 @@ const ShareButton = ({ title, text, url }: ShareButtonProps) => {
         console.error('Falha ao compartilhar', error);
         sendError('Ocorreu um erro ao tentar abrir as opções de compartilhamento.', -1)
       }
-    } finally {
-      setLoading(false);
     }
   };
 
