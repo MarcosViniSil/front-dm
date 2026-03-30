@@ -25,6 +25,19 @@
   white-space: nowrap;
 }
 
+.navbar-menu .ant-menu-item {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.navbar-menu {
+  height: 60px;
+}
+
+.navbar-menu .ant-menu-item {
+  height: 60px !important;
+}
+
 .brand-icon {
   -webkit-text-fill-color: initial;
   font-size: 1.3rem;
@@ -39,6 +52,10 @@
 
 .navbar-menu .ant-menu-item-selected {
   color: var(--accent) !important;
+}
+
+.navbar-menu .ant-menu-ink-bar {
+  display: none !important;
 }
 
 /* ─── Mobile: bottom tab bar ─── */
