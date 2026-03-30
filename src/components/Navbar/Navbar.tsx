@@ -67,6 +67,7 @@ function Navbar() {
           flex: 1,
           zIndex: 100,
           justifyContent: 'end',
+          
         }}
       />
     </nav>
