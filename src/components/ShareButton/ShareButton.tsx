@@ -33,6 +33,7 @@ const ShareButton = ({ title, text, url }: ShareButtonProps) => {
     if (!navigator.share) {
       navigator.clipboard.writeText(url || window.location.href);
       sendSuccess('URL copiada para a área de transferência!', -1)
+      setLoading(false);
       return;
     }
 
