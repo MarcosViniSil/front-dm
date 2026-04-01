@@ -1,17 +1,5 @@
 import type { ThemeConfig } from 'antd';
 
-/**
- * Ant Design theme configuration aligned with the
- * "Amigos da Fauna" visual identity guide.
- *
- * Primary palette:
- *   Fauna Brown      #5D4037
- *   Forest Green     #4A5D23
- *   Terracotta Orange#D38345
- *   Paper Beige      #F5F1E3
- *   Nature Yellow    #FBC02D
- *   Danger Red       #C0392B
- */
 export const faunaTheme: ThemeConfig = {
   token: {
     // ── Colour system ──────────────────────────────────
