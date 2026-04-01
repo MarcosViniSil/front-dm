@@ -32,7 +32,8 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
   }
 
   if (!response.ok) {
-    const error = new Error(data?.message || 'Request failed') as any;
+    console.log(data)
+    const error = new Error(data.detail || 'Ocorreu um erro ao realizar operação') as any;
     error.status = response.status;
     error.data = data;
     throw error;
