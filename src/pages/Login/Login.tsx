@@ -27,13 +27,12 @@ function Login() {
       await userService.login({ email: values.email.trim(), password: values.password });
       navigate('/');
     } catch (err: any) {
-      if (err instanceof Error) {
         setApiError(
-          err.message.includes('422')
-            ? 'Dados inválidos. Verifique os campos e tente novamente.'
+          err.status == 422 ?
+             'Dados inválidos. Verifique os campos e tente novamente.'
             : err.message || 'Erro ao entrar. Tente novamente mais tarde.'
         );
-      }
+      
     } finally {
       setSubmitting(false);
     }

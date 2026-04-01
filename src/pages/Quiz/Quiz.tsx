@@ -5,6 +5,7 @@ import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { quizService } from '../../services';
 import type { QuizQuestion, QuizOption } from '../../services';
 import { toast } from 'sonner';
+import { useOnlineStatus } from '../../components/userStatus/status';
 
 const { Title, Text } = Typography;
 
@@ -22,7 +23,7 @@ function Quiz() {
   const [hits, setHits] = useState(0);
   const [fails, setFails] = useState(0);
   const [finished, setFinished] = useState(false);
-
+  const isOnline = useOnlineStatus()
   const [submitting, setSubmitting] = useState(false);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [answerResult, setAnswerResult] = useState<'correct' | 'incorrect' | null>(null);
@@ -43,6 +44,11 @@ function Quiz() {
 
   useEffect(() => {
     async function loadQuiz() {
+    if(!isOnline){
+      sendError("É necessário conexão com a internet para jogar o quiz.",-1)
+      navigate('/')
+      return;
+    }
       if (!id) return;
       try {
         setLoading(true);

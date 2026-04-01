@@ -2,18 +2,23 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Alert, Typography, Card, Space, Result } from 'antd';
 import { userService } from '../../services';
+import { useOnlineStatus } from '../../components/userStatus/status';
 
 const { Title, Text } = Typography;
 
 function Register() {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-
+  const isOnline = useOnlineStatus()
   const [apiError, setApiError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
   async function handleFinish(values: { name: string; email: string; password: string }) {
+    if(!isOnline){
+      setApiError('Você está offline. Crie sua conta quando tiver conexão com a internet.');
+      return;
+    }
     setApiError('');
     setSubmitting(true);
 
@@ -26,13 +31,9 @@ function Register() {
       setSuccess(true);
       setTimeout(() => navigate('/'), 2000);
     } catch (err: any) {
-      if (err instanceof Error) {
         setApiError(
-          err.message.includes('422')
-            ? 'Dados inválidos. Verifique os campos e tente novamente.'
-            : err.message || 'Erro ao criar conta. Tente novamente mais tarde.'
+          err.message || 'Erro ao criar conta. Tente novamente mais tarde.'
         );
-      }
     } finally {
       setSubmitting(false);
     }
