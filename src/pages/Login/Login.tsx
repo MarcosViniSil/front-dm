@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Alert, Typography, Card, Space } from 'antd';
 import { userService } from '../../services';
+import { useOnlineStatus } from '../../components/userStatus/status';
 
 const { Title, Text } = Typography;
 
 function Login() {
+  const isOnline = useOnlineStatus()
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -13,6 +15,11 @@ function Login() {
   const [submitting, setSubmitting] = useState(false);
 
   async function handleFinish(values: { email: string; password: string }) {
+    
+    if(!isOnline){
+      setApiError('Você está offline. Faça login quando tiver conexão com a internet.');
+      return;
+    }
     setApiError('');
     setSubmitting(true);
 

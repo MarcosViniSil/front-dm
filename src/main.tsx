@@ -7,7 +7,9 @@ import { faunaTheme } from './theme/faunaTheme';
 import './index.css';
 import App from './App';
 import { Toaster } from 'sonner';
+import { registerSW } from 'virtual:pwa-register'
 
+registerSW({ immediate: true })
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Toaster position="top-right" />

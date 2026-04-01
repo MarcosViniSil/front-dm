@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Row, Col, Typography, Spin, Button } from 'antd';
+import { Card, Row, Col, Typography, Spin, Button, Input } from 'antd';
 import { animalService } from '../../services';
 import type { Animal } from '../../services';
 import ShareButton from '../../components/ShareButton/ShareButton';
@@ -9,6 +9,22 @@ const { Title, Text } = Typography;
 
 function Animals() {
   const [animals, setAnimals] = useState<Animal[]>([]);
+  const [animalsFiltered, setAnimalsFiltered] = useState<Animal[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setAnimalsFiltered(animals);
+    } else {
+      const lowercasedQuery = searchQuery.toLowerCase();
+      const filtered = animals.filter(animal => 
+        animal.name.toLowerCase().includes(lowercasedQuery)
+      );
+      setAnimalsFiltered(filtered);
+    }
+  }, [animals, searchQuery]);
+
+
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -68,9 +84,19 @@ function Animals() {
         </Title>
       </div>
 
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px', padding: '0 1rem' }}>
+        <Input
+          placeholder="Buscar animal por nome..."
+          allowClear
+          size="large"
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ maxWidth: 600, width: '100%' }}
+        />
+      </div>
+
       {/* Grid of animal cards */}
       <Row gutter={[24, 24]}>
-        {animals.map((animal) => (
+        {animalsFiltered.map((animal) => (
           <Col key={animal.id} xs={24} sm={12} lg={8}>
             <Card
               hoverable
@@ -151,12 +177,20 @@ function Animals() {
       )}
 
       {/* End message */}
-      {!hasMore && animals.length > 0 && (
+      {!hasMore && animals.length > 0 && animalsFiltered.length > 0 && (
         <Text
           type="secondary"
           style={{ display: 'block', textAlign: 'center', padding: '1.5rem 0 3rem', fontWeight: 600 }}
         >
           🌿 Todos os animais foram carregados
+        </Text>
+      )}
+      {!loading && animalsFiltered.length === 0 && animals.length > 0 && (
+        <Text
+          type="secondary"
+          style={{ display: 'block', textAlign: 'center', padding: '1.5rem 0 3rem', fontWeight: 600 }}
+        >
+          Nenhum animal encontrado para "{searchQuery}"
         </Text>
       )}
 
