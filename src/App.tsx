@@ -9,9 +9,11 @@ import Navbar from './components/Navbar/Navbar';
 import Quiz from './pages/Quiz/Quiz';
 import AnimalsMap from './pages/Map/AnimalsMap';
 import OfflineBanner from './components/offline/OfflineBanner'
+import Notification from './components/notification/notification';
 
 function App() {
   return <div>
+      <Notification />
       <Navbar />
       <OfflineBanner />
       <Routes>

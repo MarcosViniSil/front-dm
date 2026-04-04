@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Row, Col, Typography, Spin, Button, Input } from 'antd';
+import { toast } from 'sonner';
 import { animalService } from '../../services';
 import type { Animal } from '../../services';
 import ShareButton from '../../components/ShareButton/ShareButton';
+import { requestForToken } from '../../firebase';
 
 const { Title, Text } = Typography;
 
@@ -17,7 +19,7 @@ function Animals() {
       setAnimalsFiltered(animals);
     } else {
       const lowercasedQuery = searchQuery.toLowerCase();
-      const filtered = animals.filter(animal => 
+      const filtered = animals.filter(animal =>
         animal.name.toLowerCase().includes(lowercasedQuery)
       );
       setAnimalsFiltered(filtered);
@@ -74,14 +76,31 @@ function Animals() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [offset, loading, hasMore, fetchAnimals]);
 
+  const handleSubscribe = async () => {
+    if (!('Notification' in window)) {
+      toast.error('Seu navegador não suporta notificações.');
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      toast.success('Notificações ativadas com sucesso!');
+      requestForToken();
+    } else {
+      toast.error('Permissão de notificações negada.');
+    }
+  };
+
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1rem 2rem' }}>
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '24px 0 16px' }}>
-        <Title level={1} style={{ fontSize: '2.6rem', lineHeight: 1.1, marginBottom: 0 }}>
+        <Title level={1} style={{ fontSize: '2.6rem', lineHeight: 1.1, marginBottom: 16 }}>
           Animais<br />
           <span style={{ color: '#4A5D23' }}>Mata Atlântica</span>
         </Title>
+        <Button onClick={handleSubscribe} style={{ marginBottom: 16, borderColor: '#D38345', color: '#D38345' }}>
+          Ativar Notificações
+        </Button>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px', padding: '0 1rem' }}>
@@ -159,9 +178,9 @@ function Animals() {
                   Realizar Quiz
                 </Button>
               </Link>
-              <ShareButton 
-                title={`Amigos da Fauna - ${animal.name}`} 
-                text={`Aprenda tudo sobre o ${animal.name} e teste seus conhecimentos!`} 
+              <ShareButton
+                title={`Amigos da Fauna - ${animal.name}`}
+                text={`Aprenda tudo sobre o ${animal.name} e teste seus conhecimentos!`}
                 url={`${window.location.origin}/quiz/${animal.id}`}
               />
             </Card>
